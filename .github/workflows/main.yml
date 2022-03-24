@@ -30,7 +30,7 @@ jobs:
         uses: larrylawl/auto-github-issue-labeller-action@v1.0
         with:
           # Github Personal Access Token
-          GITHUB_TOKEN: $secrets.GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Every trigger labels issues up to %DELTA days back. Primary purpose is to label pre-existing issues on initial setup.
           DELTA: 1 # default is 1
           # Skips prediction when below confidence threshold. Select from interval [-10, 4]. 
