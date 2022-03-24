@@ -8,8 +8,10 @@ from tensorflow.keras.utils import to_categorical
 print('Reading input:')
 df = pd.read_json('var/DataSets/664/train.json')
 
+# Change these values if you wish to test out other dropout values
 dropout_values = [0.1, 0.2, 0.5]
 
+# Change these links if you wish to test out other versions of BERT
 preprocess_url_uncased = 'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3'
 preprocess_url_cased = 'https://tfhub.dev/tensorflow/bert_en_cased_preprocess/3'
 encodder_url_uncased = 'https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/4'
@@ -22,7 +24,7 @@ bert_preprocess_cased = hub.KerasLayer(preprocess_url_cased)
 bert_encodder_cased = hub.KerasLayer(encodder_url_cased)
 
 
-
+# There is a total of 6 combinations of hyperparameters tested
 for i in range(6):
     X_train, X_test, y_train, y_test = train_test_split(df[['title','body']].agg('. '.join, axis=1), df['label'], test_size = 0.2)
 
@@ -46,10 +48,12 @@ for i in range(6):
 
     model = tf.keras.Model(inputs =[text_input], outputs = [layer])
     model.compile(optimizer='adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
+    # Other Optimizers can be used
 
     model.fit(X_train, y_train, epochs=5, batch_size=64)
     model.save(f'var/Scripts/664/Models/{i}')
 
+    # This records the validation loss & accuracy (even though its called test accuracy)
     loss, accuracy = model.evaluate(X_test, y_test)
 
     parameter_file = open(f'var/Scripts/664/Results/{i}.txt', 'w')
