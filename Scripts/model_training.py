@@ -35,8 +35,6 @@ for i in range(6):
     y_train = to_categorical(y_train)
     y_test = to_categorical(y_test)
 
-
-
     def get_sentence_embedding(sentences):
         preprossed_text = bert_preprocess_uncased(sentences) if i < 3 else bert_preprocess_cased(sentences)
         return_val = bert_encodder_uncased(preprossed_text) if i < 3 else bert_encodder_cased(preprossed_text)
@@ -47,15 +45,17 @@ for i in range(6):
     layer = tf.keras.layers.Dense(3, activation='softmax', name='output')(layer)
 
     model = tf.keras.Model(inputs =[text_input], outputs = [layer])
-    model.compile(optimizer='adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
-    # Other Optimizers can be used
+    model.compile(optimizer='adam', loss = 'categorical_crossentropy', metrics=['accuracy'])# Other Optimizers can be used
+    
 
+    # Trains the model
     model.fit(X_train, y_train, epochs=5, batch_size=64)
     model.save(f'var/Scripts/664/Models/{i}')
 
     # This records the validation loss & accuracy (even though its called test accuracy)
     loss, accuracy = model.evaluate(X_test, y_test)
 
+    # Writes the output results to a file
     parameter_file = open(f'var/Scripts/664/Results/{i}.txt', 'w')
     parameter_file.write(f'Dropout: {d}\n')
     parameter_file.write(f'Accuracy: {accuracy}, Loss: {loss}\n')

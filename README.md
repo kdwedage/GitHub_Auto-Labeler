@@ -1,7 +1,7 @@
 # GitHub_Auto-Labeler
 
 
-A tool for automatically labeling GitHub issues using BERT. 
+A tool for automatically labeling GitHub issues using BERT. This main model in this project was trained using the dataset provided in reference 1.
 
 
 # Requirements
